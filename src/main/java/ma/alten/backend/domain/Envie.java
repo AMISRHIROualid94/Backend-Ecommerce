@@ -1,5 +1,6 @@
 package ma.alten.backend.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -20,12 +21,19 @@ public class Envie {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "GEN_SEQ_ENVIE")
     @SequenceGenerator(sequenceName = "SEQ_ENVIE",name = "GEN_SEQ_ENVIE",initialValue = 1)
+    @Column(name = "envie_id")
     private Long id;
 
     @ManyToOne
+    @JoinColumn(name = "user_id")
     private UserEntity user;
 
     @ManyToMany
+    @JoinTable(
+            name = "envie_product",
+            joinColumns = @JoinColumn(name = "envie_id"),
+            inverseJoinColumns = @JoinColumn(name = "product_id"))
+    @JsonIgnore
     private List<Product> products = new ArrayList<>();
 }
 

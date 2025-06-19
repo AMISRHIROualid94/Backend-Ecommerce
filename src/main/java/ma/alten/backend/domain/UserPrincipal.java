@@ -1,12 +1,13 @@
-package ma.alten.backend.jwt.models;
+package ma.alten.backend.domain;
 
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import ma.alten.backend.user.entity.UserEntity;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+
 import java.util.Collection;
 
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class UserPrincipal implements UserDetails {
 
     private final UserEntity user;

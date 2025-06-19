@@ -9,8 +9,6 @@ import ma.alten.backend.repo.ProductRepo;
 import ma.alten.backend.service.EnvieService;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 @Service
 @RequiredArgsConstructor
 public class EnvieServiceImpl implements EnvieService {
@@ -33,11 +31,5 @@ public class EnvieServiceImpl implements EnvieService {
 
         envie.getProducts().remove(product);
         return envieRepo.save(envie);
-    }
-
-    @Override
-    public List<Product> getProductsInEnvie(Long envieId) {
-        Envie envie = envieRepo.findById(envieId).orElseThrow(() -> new NotFoundException("Envie not found"));
-        return envie.getProducts();
     }
 }

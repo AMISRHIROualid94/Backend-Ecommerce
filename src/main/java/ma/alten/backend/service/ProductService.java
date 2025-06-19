@@ -1,19 +1,18 @@
 package ma.alten.backend.service;
 
 import ma.alten.backend.domain.Product;
+import ma.alten.backend.dto.PaginationResponse;
 import ma.alten.backend.dto.ProductDto;
 import org.springframework.security.core.Authentication;
 
 import java.util.List;
 
 public interface ProductService {
-    Product createProduct(Product newProduct);
-    List<Product> retreiveAllProducts();
+    ProductDto createProduct(ProductDto newProduct, Authentication authentication);
+    List<ProductDto> retreiveAllProducts();
     Product findProductById(Long id);
-    Product isProductExists(Long id);
-    void deleteProductById(Long id);
-    void updateProduct(Product product);
-    Product convertToProduct(ProductDto productDto);
-    void adminAccess(Authentication authentication);
-    ProductDto convertToDto(Product product);
+    ProductDto getProductById(Long id);
+    void deleteProductById(Long id, Authentication authentication);
+    void updateProduct(Long id, ProductDto productDto, Authentication authentication);
+    PaginationResponse getProductsInEnvie(Long envieId, int page, int size);
 }

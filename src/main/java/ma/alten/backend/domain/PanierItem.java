@@ -14,6 +14,7 @@ public class PanierItem {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "GEN_SEQ_PANIER_ITEM")
     @SequenceGenerator(sequenceName = "SEQ_PANIER_ITEM",name = "GEN_SEQ_PANIER_ITEM",initialValue = 1)
+    @Column(name = "panier_item_id")
     private Long id;
 
     @ManyToOne
@@ -24,12 +25,7 @@ public class PanierItem {
     @JoinColumn(name = "product_id")
     private Product product;
 
+    @Column(name = "quantite")
     private Integer quantity;
-
-    public PanierItem(Panier panier, Product product, Integer quantity) {
-        this.panier = panier;
-        this.product = product;
-        this.quantity = quantity;
-    }
 }
 

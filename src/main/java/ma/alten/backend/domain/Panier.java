@@ -1,5 +1,6 @@
 package ma.alten.backend.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -19,41 +20,17 @@ import java.util.List;
 public class Panier {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "GEN_SEQ_PANIER")
+    @SequenceGenerator(sequenceName = "SEQ_PANIER",name = "GEN_SEQ_PANIER",initialValue = 1)
+    @Column(name = "panier_id")
     private Long id;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne
+    @Column(name = "user_id")
     private UserEntity user;
 
     @OneToMany(mappedBy = "panier", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
     private List<PanierItem> items = new ArrayList<>();
-
-    public Panier(UserEntity user) {
-        this.user = user;
-    }
-
-    public void addProduct(Product product, Integer quantity) {
-        PanierItem panierItem = findPanierItem(product);
-        if (panierItem == null) {
-            panierItem = new PanierItem(this, product, quantity);
-            items.add(panierItem);
-        } else {
-            panierItem.setQuantity(panierItem.getQuantity() + quantity);
-        }
-    }
-
-    public void removeProduct(Product product) {
-        PanierItem panierItem = findPanierItem(product);
-        if (panierItem != null) {
-            items.remove(panierItem);
-        }
-    }
-
-    private PanierItem findPanierItem(Product product) {
-        return items.stream()
-                .filter(panierItem -> panierItem.getProduct().equals(product))
-                .findFirst()
-                .orElse(null);
-    }
 
 }

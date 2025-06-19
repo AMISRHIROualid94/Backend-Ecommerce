@@ -1,14 +1,11 @@
 package ma.alten.backend.controller;
 
 import ma.alten.backend.domain.Envie;
-import ma.alten.backend.domain.Product;
 import ma.alten.backend.service.EnvieService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/envie")
@@ -29,9 +26,4 @@ public class EnvieController {
         return ResponseEntity.ok(updatedEnvie);
     }
 
-    @GetMapping("/{envieId}/products")
-    public ResponseEntity<List<Product>> getProductsInEnvie(@PathVariable Long envieId) {
-        List<Product> products = envieService.getProductsInEnvie(envieId);
-        return ResponseEntity.ok(products);
-    }
 }

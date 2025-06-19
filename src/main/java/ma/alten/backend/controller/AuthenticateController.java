@@ -1,7 +1,7 @@
-package ma.alten.backend.jwt.controller;
+package ma.alten.backend.controller;
 
-import ma.alten.backend.jwt.models.AuthenticationRequest;
-import ma.alten.backend.jwt.models.AuthenticationResponse;
+import ma.alten.backend.dto.auth.AuthenticationRequest;
+import ma.alten.backend.dto.auth.AuthenticationResponse;
 import ma.alten.backend.jwt.services.ApplicationUserDetailsService;
 import ma.alten.backend.jwt.utils.JwtUtil;
 import ma.alten.backend.user.entity.UserEntity;

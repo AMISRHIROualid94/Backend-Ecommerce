@@ -1,6 +1,6 @@
 package ma.alten.backend.jwt.services;
 
-import ma.alten.backend.jwt.models.UserPrincipal;
+import ma.alten.backend.domain.UserPrincipal;
 import ma.alten.backend.user.entity.UserEntity;
 import ma.alten.backend.user.services.UserService;
 import org.springframework.security.authentication.BadCredentialsException;

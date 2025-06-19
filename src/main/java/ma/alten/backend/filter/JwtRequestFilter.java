@@ -1,4 +1,4 @@
-package ma.alten.backend.jwt.filter;
+package ma.alten.backend.filter;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

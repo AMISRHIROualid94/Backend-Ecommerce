@@ -1,6 +1,9 @@
 package ma.alten.backend.user.services.impl;
 
+import lombok.RequiredArgsConstructor;
+import ma.alten.backend.constantes.ExceptionConst;
 import ma.alten.backend.exception.BadRequestException;
+import ma.alten.backend.exception.NotFoundException;
 import ma.alten.backend.user.dto.UserDto;
 import ma.alten.backend.user.entity.UserEntity;
 import ma.alten.backend.user.repository.UserRepo;
@@ -14,19 +17,14 @@ import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 
 @Service
+@RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 
     private final UserRepo userRepo;
-    private final ModelMapper modelMapper;
-
-    public UserServiceImpl(UserRepo userRepo, ModelMapper modelMapper) {
-        this.userRepo = userRepo;
-        this.modelMapper = modelMapper;
-    }
 
     @Override
     public UserEntity searchByEmail(String email) {
-        return userRepo.findByEmail(email);
+        return userRepo.findByEmail(email).orElseThrow(()-> new NotFoundException(String.format(ExceptionConst.USER_NOT_FOUND, email)));
     }
 
     @Override

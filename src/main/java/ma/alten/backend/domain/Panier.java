@@ -2,10 +2,7 @@ package ma.alten.backend.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import ma.alten.backend.user.entity.UserEntity;
 
 import java.util.ArrayList;
@@ -17,6 +14,7 @@ import java.util.List;
 @AllArgsConstructor
 @Getter
 @Setter
+@Builder
 public class Panier {
 
     @Id
@@ -33,4 +31,31 @@ public class Panier {
     @JsonIgnore
     private List<PanierItem> items = new ArrayList<>();
 
+    public void addProduct(Product product, Integer quantity) {
+        PanierItem panierItem = findPanierItem(product);
+        if (panierItem == null) {
+            panierItem = PanierItem.builder()
+                    .panier(this)
+                    .product(product)
+                    .quantity(quantity)
+                    .build();
+            items.add(panierItem);
+        } else {
+            panierItem.setQuantity(panierItem.getQuantity() + quantity);
+        }
+    }
+
+    public void removeProduct(Product product) {
+        PanierItem panierItem = findPanierItem(product);
+        if (panierItem != null) {
+            items.remove(panierItem);
+        }
+    }
+
+    private PanierItem findPanierItem(Product product) {
+        return items.stream()
+                .filter(panierItem -> panierItem.getProduct().equals(product))
+                .findFirst()
+                .orElse(null);
+    }
 }

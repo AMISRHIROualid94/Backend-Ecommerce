@@ -5,6 +5,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 
 @Repository
 public interface UserRepo extends JpaRepository<UserEntity,Long> {
@@ -14,5 +16,5 @@ public interface UserRepo extends JpaRepository<UserEntity,Long> {
             "FROM UserEntity u " +
             "WHERE u.email= ?1")
     Boolean selectExistsEmail(String email);
-    UserEntity findByEmail(String email);
+    Optional<UserEntity> findByEmail(String email);
 }

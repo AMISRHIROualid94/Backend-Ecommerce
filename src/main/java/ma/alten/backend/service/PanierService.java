@@ -5,8 +5,8 @@ import ma.alten.backend.dto.PanierDto;
 
 public interface PanierService {
 
-    void addProductToPanier(String email, Long productId, int quantity);
+    PanierDto addProductToPanier(String email, Long productId, int quantity);
+    Panier getPanierByUserEmail(String email);
+    PanierDto getPanier(String email);
     void removeProductFromPanier(String email, Long productId);
-    PanierDto getPanierByUserEntity(String email);
-    PanierDto convertToDto(Panier panier);
 }

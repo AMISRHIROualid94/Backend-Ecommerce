@@ -16,10 +16,8 @@ public class PanierController {
     private final PanierService panierService;
     
     @PostMapping(value ="/add/{productId}")
-    public ResponseEntity<String> addProductToPanier(@PathVariable Long productId, @RequestParam int quantity, Authentication authentication) {
-        String email = authentication.getName();
-        panierService.addProductToPanier(email, productId, quantity);
-        return ResponseEntity.ok("Product added successfully");
+    public ResponseEntity<PanierDto> addProductToPanier(@PathVariable Long productId, @RequestParam int quantity, Authentication authentication) {
+        return ResponseEntity.ok(panierService.addProductToPanier(authentication.getName(), productId, quantity));
     }
     
     @DeleteMapping("/remove/{productId}")
@@ -31,9 +29,7 @@ public class PanierController {
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<PanierDto> getPanier(Authentication authentication) {
-        String email = authentication.getName();
-        PanierDto panierDto = panierService.getPanierByUserEntity(email);
-        return ResponseEntity.ok(panierDto);
+        return ResponseEntity.ok(panierService.getPanier(authentication.getName()));
     }
 }
 

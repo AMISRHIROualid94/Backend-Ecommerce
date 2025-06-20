@@ -1,82 +1,57 @@
 package ma.alten.backend.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import ma.alten.backend.constantes.ExceptionConst;
 import ma.alten.backend.domain.Panier;
 import ma.alten.backend.domain.Product;
 import ma.alten.backend.dto.PanierDto;
-import ma.alten.backend.dto.PanierItemDto;
 import ma.alten.backend.exception.NotFoundException;
+import ma.alten.backend.mapper.PanierMapper;
 import ma.alten.backend.repo.PanierRepo;
-import ma.alten.backend.repo.ProductRepo;
 import ma.alten.backend.service.PanierService;
+import ma.alten.backend.service.ProductService;
 import ma.alten.backend.user.entity.UserEntity;
-import ma.alten.backend.user.repository.UserRepo;
+import ma.alten.backend.user.services.UserService;
 import org.springframework.stereotype.Service;
-
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class PanierServiceImpl implements PanierService {
 
     private final PanierRepo panierRepo;
-    private final ProductRepo productRepo;
-    private final UserRepo userRepo;
+    private final ProductService  productService;
+    private final UserService userService;
+    private final PanierMapper panierMapper;
 
     @Override
-    public void addProductToPanier(String email, Long productId, int quantity) {
-        UserEntity user = userRepo.findByEmail(email);
-        if (user == null){
-            throw new NotFoundException("User not found");
-        }
-        Product product = productRepo.findById(productId)
-                .orElseThrow(() -> new NotFoundException("Product not found"));
-        Panier panier = panierRepo.findByUser(user);
+    public PanierDto addProductToPanier(String email, Long productId, int quantity) {
+        UserEntity user = userService.searchByEmail(email);
+        Product product = productService.findProductById(productId);
+        Panier panier = panierRepo.findByUser_Email(email).orElse(null);
         if (panier == null){
-            panier = new Panier(user);
+            panier = Panier.builder()
+                    .user(user)
+                    .build();
         }
         panier.addProduct(product, quantity);
-        panierRepo.save(panier);
+        return panierMapper.toPanierDto(panierRepo.save(panier));
     }
+
     @Override
     public void removeProductFromPanier(String email, Long productId) {
-        UserEntity user = userRepo.findByEmail(email);
-        if (user == null){
-            throw new NotFoundException("User not found");
-        }
-        Product product = productRepo.findById(productId)
-                .orElseThrow(() -> new NotFoundException("Product not found"));
-
-        Panier panier = panierRepo.findByUser(user);
-        if(panier == null){
-            throw new NotFoundException("Panier not found");
-        }
-
+        Product product = productService.findProductById(productId);
+        Panier panier = getPanierByUserEmail(email);
         panier.removeProduct(product);
         panierRepo.save(panier);
     }
     @Override
-    public PanierDto getPanierByUserEntity(String email) {
-        UserEntity user = userRepo.findByEmail(email);
-        if (user == null){
-            throw new NotFoundException("User not found");
-        }
-
-        Panier panier = panierRepo.findByUser(user);
-        if(panier == null){
-            throw new NotFoundException("Panier not found");
-        }
-        return convertToDto(panier);
+    public Panier getPanierByUserEmail(String email) {
+        return panierRepo.findByUser_Email(email).orElseThrow(() -> new NotFoundException(String.format(ExceptionConst.PANIER_NOT_FOUND, email)));
     }
+
     @Override
-    public PanierDto convertToDto(Panier panier) {
-        PanierDto panierDto = new PanierDto();
-        panierDto.setId(panier.getId());
-        panierDto.setUserEmail(panier.getUser().getEmail());
-        panierDto.setItems(panier.getItems().stream()
-                .map(item -> new PanierItemDto(item.getProduct().getName(), item.getQuantity()))
-                .collect(Collectors.toList()));
-        return panierDto;
+    public PanierDto getPanier(String email) {
+        return panierMapper.toPanierDto(getPanierByUserEmail(email));
     }
 }
 

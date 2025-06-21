@@ -1,14 +1,13 @@
 package ma.alten.backend.service.impl;
 
 import lombok.RequiredArgsConstructor;
-import ma.alten.backend.constantes.ExceptionConst;
 import ma.alten.backend.constantes.Log;
 import ma.alten.backend.domain.Product;
 import ma.alten.backend.dto.PaginationResponse;
 import ma.alten.backend.dto.ProductDto;
-import ma.alten.backend.exception.NotFoundException;
 import ma.alten.backend.mapper.ProductMapper;
 import ma.alten.backend.repo.ProductRepo;
+import ma.alten.backend.service.EnvieService;
 import ma.alten.backend.service.ProductService;
 import ma.alten.backend.service.ServiceHelper;
 import org.slf4j.Logger;
@@ -21,6 +20,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -32,6 +32,7 @@ public class ProductServiceImpl implements ProductService {
     private final ProductRepo productRepository;
     private final ProductMapper productMapper;
     private final ServiceHelper serviceHelper;
+    private final EnvieService envieService;
 
     @Override
     public ProductDto createProduct(ProductDto newProduct,Authentication authentication) {
@@ -48,13 +49,8 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Product findProductById(Long id) {
-        return productRepository.findById(id).orElseThrow(() -> new NotFoundException(String.format(ExceptionConst.PRODUCT_NOT_FOUND,id)));
-    }
-
-    @Override
     public ProductDto getProductById(Long id) {
-        return productMapper.toProductDto(findProductById(id));
+        return productMapper.toProductDto(serviceHelper.findProductById(id));
     }
 
     @Override
@@ -67,7 +63,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public void updateProduct(Long id, ProductDto productDto,Authentication authentication) {
        serviceHelper.adminAccess(authentication);
-       Product product = findProductById(id);
+       Product product = serviceHelper.findProductById(id);
        logger.info(Log.UPDATE_PRODUCT,id);
        productRepository.save(productMapper.updateProductFromDto(productDto,product));
     }
@@ -75,7 +71,8 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public PaginationResponse getProductsInEnvie(Long envieId, int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
-        Page<Product> products = productRepository.findProductsByEnvieId(envieId,pageable);
+        List<Long> productsIds = envieService.getEnvieById(envieId).getProducts().stream().map(product -> product.getId()).collect(Collectors.toList());
+        Page<Product> products = productsIds.isEmpty()? Page.empty(pageable) : productRepository.findProductsByIdIn(productsIds, pageable);
         return PaginationResponse.builder()
                 .objects(productMapper.toProductDtos(products.getContent()))
                 .pageNumber(page)

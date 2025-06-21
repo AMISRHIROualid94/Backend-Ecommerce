@@ -3,7 +3,7 @@ package ma.alten.backend.constantes;
 public class Constante {
 
     public static final String[] SWAGGER_PATHS = {"/swagger-ui/**", "/v3/api-docs/**"};
-    public static final String[] AUTH_PATH = {"/api/users/**", "/token"};
+    public static final String[] AUTH_PATH = {"/users/**", "/token"};
 
     //LocalDateTime format
     public static final String DATE_TIME_FORMAT = "dd/MM/yyyy HH:mm:ss";
@@ -20,6 +20,7 @@ public class Constante {
 
     public static final String INVALID_CREDENTIAL = "INVALID CREDENTIAL";
     public static final String UNAUTHORIZED = "UNAUTHORIZED USER";
+    public static final String PAYLOAD_EMPTY = "Password cannot be empty or whitespace only string.";
 
 
 }

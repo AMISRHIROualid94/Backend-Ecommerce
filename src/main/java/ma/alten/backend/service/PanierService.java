@@ -8,5 +8,5 @@ public interface PanierService {
     PanierDto addProductToPanier(String email, Long productId, int quantity);
     Panier getPanierByUserEmail(String email);
     PanierDto getPanier(String email);
-    void removeProductFromPanier(String email, Long productId);
+    PanierDto removeProductFromPanier(String email, Long productId);
 }

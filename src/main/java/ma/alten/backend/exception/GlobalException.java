@@ -57,6 +57,12 @@ public class GlobalException {
         return new ResponseEntity<>(response, HttpStatus.FORBIDDEN);
     }
 
+    @ExceptionHandler(AuthenticationException.class)
+    public ResponseEntity<ErrorResponse> handleAuthenticationException(AuthenticationException ex, HttpServletRequest request) {
+        ErrorResponse response = new ErrorResponse("FORBIDDEN", Constante.ERRORPREFIX + ex.getMessage(), request.getRequestURI(), LocalDateTime.now());
+        return new ResponseEntity<>(response, HttpStatus.FORBIDDEN);
+    }
+
     @ExceptionHandler(UnauthorizedException.class)
     public ResponseEntity<ErrorResponse> handleUnauthorizedException(UnauthorizedException ex, HttpServletRequest request) {
         ErrorResponse response = new ErrorResponse("UNAUTHORIZED", Constante.ERRORPREFIX + ex.getMessage(), request.getRequestURI(), LocalDateTime.now());

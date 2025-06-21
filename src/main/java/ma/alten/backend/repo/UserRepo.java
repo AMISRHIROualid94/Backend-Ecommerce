@@ -1,6 +1,6 @@
-package ma.alten.backend.user.repository;
+package ma.alten.backend.repo;
 
-import ma.alten.backend.user.entity.UserEntity;
+import ma.alten.backend.domain.UserEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;

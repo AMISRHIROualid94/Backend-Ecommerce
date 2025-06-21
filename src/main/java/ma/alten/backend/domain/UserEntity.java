@@ -1,4 +1,4 @@
-package ma.alten.backend.user.entity;
+package ma.alten.backend.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
@@ -6,7 +6,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import ma.alten.backend.domain.Envie;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,22 +26,18 @@ public class UserEntity {
     private Long id;
 
     @Column(name = "user_name")
-    private String userName;
+    private String username;
 
     @Column(name = "first_name")
-    private String firstName;
+    private String firstname;
 
     @Column(name = "email", unique = true)
     private String email;
 
+    @Column(name = "password")
+    private String password;
+
     @OneToMany(cascade = CascadeType.ALL,orphanRemoval = true, mappedBy = "user")
     @JsonIgnore
     private List<Envie> envieList =new ArrayList<>();
-
-    @Column(name = "hash")
-    private byte[] storedHash;
-
-    @Column(name = "salt")
-    private byte[] storedSalt;
-
 }

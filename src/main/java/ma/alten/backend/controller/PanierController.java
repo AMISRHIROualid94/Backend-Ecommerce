@@ -9,7 +9,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/paniers")
+@RequestMapping("/paniers")
 @RequiredArgsConstructor
 public class PanierController {
 
@@ -21,10 +21,8 @@ public class PanierController {
     }
     
     @DeleteMapping("/remove/{productId}")
-    public ResponseEntity<String> removeProductFromPanier(@PathVariable Long productId, Authentication authentication) {
-        String email = authentication.getName();
-        panierService.removeProductFromPanier(email, productId);
-        return ResponseEntity.ok("Product deleted from the panier");
+    public ResponseEntity<PanierDto> removeProductFromPanier(@PathVariable Long productId, Authentication authentication) {
+        return ResponseEntity.ok(panierService.removeProductFromPanier(authentication.getName(), productId));
     }
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)

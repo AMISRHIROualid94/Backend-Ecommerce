@@ -1,14 +1,13 @@
 package ma.alten.backend.domain;
 
 import lombok.RequiredArgsConstructor;
-import ma.alten.backend.user.entity.UserEntity;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 
 @RequiredArgsConstructor
-public class UserPrincipal implements UserDetails {
+public class UserDetailPrincipal implements UserDetails {
 
     private final UserEntity user;
 

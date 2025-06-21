@@ -9,9 +9,9 @@ import ma.alten.backend.exception.NotFoundException;
 import ma.alten.backend.mapper.PanierMapper;
 import ma.alten.backend.repo.PanierRepo;
 import ma.alten.backend.service.PanierService;
-import ma.alten.backend.service.ProductService;
-import ma.alten.backend.user.entity.UserEntity;
-import ma.alten.backend.user.services.UserService;
+import ma.alten.backend.service.ServiceHelper;
+import ma.alten.backend.domain.UserEntity;
+import ma.alten.backend.service.UserService;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -19,14 +19,14 @@ import org.springframework.stereotype.Service;
 public class PanierServiceImpl implements PanierService {
 
     private final PanierRepo panierRepo;
-    private final ProductService  productService;
+    private final ServiceHelper serviceHelper;
     private final UserService userService;
     private final PanierMapper panierMapper;
 
     @Override
     public PanierDto addProductToPanier(String email, Long productId, int quantity) {
         UserEntity user = userService.searchByEmail(email);
-        Product product = productService.findProductById(productId);
+        Product product = serviceHelper.findProductById(productId);
         Panier panier = panierRepo.findByUser_Email(email).orElse(null);
         if (panier == null){
             panier = Panier.builder()
@@ -38,11 +38,11 @@ public class PanierServiceImpl implements PanierService {
     }
 
     @Override
-    public void removeProductFromPanier(String email, Long productId) {
-        Product product = productService.findProductById(productId);
+    public PanierDto removeProductFromPanier(String email, Long productId) {
+        Product product = serviceHelper.findProductById(productId);
         Panier panier = getPanierByUserEmail(email);
         panier.removeProduct(product);
-        panierRepo.save(panier);
+        return panierMapper.toPanierDto(panierRepo.save(panier));
     }
     @Override
     public Panier getPanierByUserEmail(String email) {

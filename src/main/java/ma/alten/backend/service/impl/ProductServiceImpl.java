@@ -65,7 +65,7 @@ public class ProductServiceImpl implements ProductService {
        serviceHelper.adminAccess(authentication);
        Product product = serviceHelper.findProductById(id);
        logger.info(Log.UPDATE_PRODUCT,id);
-       return productMapper.toProductDto(productRepository.save(productMapper.toProduct(productDto)));
+       return productMapper.toProductDto(productRepository.save(productMapper.updateProductFromDto(productDto,product)));
     }
 
     @Override

@@ -13,9 +13,11 @@ import ma.alten.backend.service.ServiceHelper;
 import ma.alten.backend.domain.UserEntity;
 import ma.alten.backend.service.UserService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class PanierServiceImpl implements PanierService {
 
     private final PanierRepo panierRepo;

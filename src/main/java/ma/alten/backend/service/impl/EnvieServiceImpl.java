@@ -11,9 +11,11 @@ import ma.alten.backend.repo.EnvieRepo;
 import ma.alten.backend.service.EnvieService;
 import ma.alten.backend.service.ServiceHelper;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class EnvieServiceImpl implements EnvieService {
 
     private final EnvieRepo envieRepo;

@@ -22,7 +22,6 @@ public record ProductDto(
         String category,
 
         @NotNull(message = Validation.BLANK)
-        @Positive(message = Validation.POSITIVE)
         Double price,
 
         @NotNull(message = Validation.BLANK)

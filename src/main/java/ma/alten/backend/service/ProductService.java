@@ -11,6 +11,6 @@ public interface ProductService {
     List<ProductDto> retreiveAllProducts();
     ProductDto getProductById(Long id);
     void deleteProductById(Long id, Authentication authentication);
-    void updateProduct(Long id, ProductDto productDto, Authentication authentication);
+    ProductDto updateProduct(Long id, ProductDto productDto, Authentication authentication);
     PaginationResponse getProductsInEnvie(Long envieId, int page, int size);
 }

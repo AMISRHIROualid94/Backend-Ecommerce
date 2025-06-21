@@ -6,12 +6,10 @@ import ma.alten.backend.dto.auth.AuthenticationResponse;
 import ma.alten.backend.jwt.services.ApplicationUserDetailsService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
+@RequestMapping("/auth")
 @RequiredArgsConstructor
 public class AuthenticateController {
 

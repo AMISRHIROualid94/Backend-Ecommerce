@@ -41,13 +41,13 @@ public class GlobalException {
             Map<String, String> errors = new HashMap<>();
             errors.put("dateTime", Validation.DATETIME_PATTERN);
 
-            ErrorResponse response = new ErrorConstraintValidationResponse("DATETIME_PARSE_ERROR", Constante.ERRORPREFIX, request.getRequestURI(), LocalDateTime.now(), errors);
+            ErrorResponse response = new ErrorConstraintValidationResponse("DATETIME_PARSE_ERROR", Constante.ERRORPREFIX + errors.get("dateTime"), request.getRequestURI(), LocalDateTime.now(), errors);
             return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
         }
 
         Map<String, String> fallbackError = new HashMap<>();
         fallbackError.put("request", Validation.REQUEST_DATA_FORMAT_ERROR);
-        ErrorResponse fallbackResponse = new ErrorConstraintValidationResponse("JSON_PARSE_ERROR", Constante.ERRORPREFIX, request.getRequestURI(), LocalDateTime.now(), fallbackError);
+        ErrorResponse fallbackResponse = new ErrorConstraintValidationResponse("JSON_PARSE_ERROR", Constante.ERRORPREFIX + fallbackError.get("request"), request.getRequestURI(), LocalDateTime.now(), fallbackError);
         return new ResponseEntity<>(fallbackResponse, HttpStatus.BAD_REQUEST);
     }
     

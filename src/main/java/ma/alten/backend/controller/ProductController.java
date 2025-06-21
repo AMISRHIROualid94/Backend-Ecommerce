@@ -47,8 +47,7 @@ public class ProductController {
     }
 
     @PatchMapping(value = "/{id}",consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> updateProduct(@PathVariable Long id, @RequestBody ProductDto productDto,Authentication authentication){
-        productService.updateProduct(id,productDto,authentication);
-        return ResponseEntity.ok("Product successfully updated");
+    public ResponseEntity<ProductDto> updateProduct(@PathVariable Long id, @RequestBody ProductDto productDto,Authentication authentication){
+        return ResponseEntity.ok(productService.updateProduct(id,productDto,authentication));
     }
 }

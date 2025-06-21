@@ -14,9 +14,11 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class ServiceHelperImpl implements ServiceHelper {
 
     private final ProductRepo productRepository;
@@ -26,9 +28,8 @@ public class ServiceHelperImpl implements ServiceHelper {
     @Override
     public void adminAccess(Authentication authentication) {
         if (!"admin@admin.com".equals(authentication.getName())) {
-            throw new AccessDeniedException("You are not allowed to create new product.");
+            throw new AccessDeniedException(ExceptionConst.NOT_ALLOWED);
         }
-        return;
     }
 
     @Override

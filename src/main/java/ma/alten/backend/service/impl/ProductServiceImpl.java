@@ -61,11 +61,11 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public void updateProduct(Long id, ProductDto productDto,Authentication authentication) {
+    public ProductDto updateProduct(Long id, ProductDto productDto,Authentication authentication) {
        serviceHelper.adminAccess(authentication);
        Product product = serviceHelper.findProductById(id);
        logger.info(Log.UPDATE_PRODUCT,id);
-       productRepository.save(productMapper.updateProductFromDto(productDto,product));
+       return productMapper.toProductDto(productRepository.save(productMapper.toProduct(productDto)));
     }
 
     @Override

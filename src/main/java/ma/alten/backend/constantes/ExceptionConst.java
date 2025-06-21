@@ -8,4 +8,6 @@ public class ExceptionConst {
 
     public static final String PASSWORD_REQUIRED = "Password is required!";
     public static final String EMAIL_TAKEN = "Email %s taken";
+
+    public static final String NOT_ALLOWED = "You are not allowed to create new product.";
 }
